@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class DragDropContainer extends StatelessWidget {
-  const DragDropContainer({Key? key, required this.onDrag}) : super(key: key);
+  const DragDropContainer({Key? key, required this.onDrag, required this.encrypting, required this.onToggle}) : super(key: key);
 
   final Function onDrag;
+  final bool encrypting;
+  final Function onToggle;
 
   void getFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -53,7 +55,27 @@ class DragDropContainer extends StatelessWidget {
                   style: textStyle
               ),
               const SizedBox(height: 20),
-              const Icon(Icons.upload_rounded, color: Colors.white, size: 50)
+              const Icon(Icons.upload_rounded, color: Colors.white, size: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Decrypting',
+                    style: textStyle.copyWith(color: encrypting ? Colors.blueGrey : Colors.white),
+                    textScaleFactor: 0.9,
+                  ),
+                  Switch(
+                    value: encrypting,
+                    onChanged: (value) => onToggle(value),
+                    activeColor: Colors.blue.shade200,
+                  ),
+                  Text(
+                    'Encrypting',
+                    style: textStyle.copyWith(color: encrypting ? Colors.white : Colors.blueGrey),
+                    textScaleFactor: 0.9,
+                  ),
+                ],
+              )
             ],
           ),
         ),

@@ -43,6 +43,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool processing = false;
+  bool encrypting = false;
   int currentFile = 1;
   late ToastHandler toast;
   var crypt = AesCrypt();
@@ -66,6 +67,20 @@ class _MyHomePageState extends State<MyHomePage> {
     return controller.text;
   }
 
+  Future<bool> encrypt(File file) async {
+    if (!encrypting)  return false;
+    if (file.path.endsWith(".aes"))  return false;
+    await compute(crypt.encryptFileSync, file.path);
+    return true;
+  }
+
+  Future<bool> decrypt(File file) async {
+    if (encrypting) return false;
+    if (!file.path.endsWith(".aes"))  return false;
+    await compute(crypt.decryptFileSync, file.path);
+    return true;
+  }
+
   void processFiles(List<File> files) async {
     setState(() => processing = true);
     // allows time for UI to update
@@ -74,25 +89,16 @@ class _MyHomePageState extends State<MyHomePage> {
     String password = await getPassword();
     if (password.isNotEmpty)  crypt.setPassword(password);
 
-    bool error = false;
+    bool success = false;
     currentFile = 0;
 
     for (File file in files) {
       setState(() => currentFile = currentFile + 1);
-      if (!file.path.endsWith(".aes")) {
-        error = true;
-        continue;
-      }
-
-      // compute isolates operation so main UI doesn't freeze
-      await compute(crypt.decryptFileSync, file.path).catchError((err) {
-        error = true;
-        return "";
-      });
+      success = encrypting ? await encrypt(file) : await decrypt(file);
     }
 
     setState(() => processing = false);
-    error ? toast.error() : toast.success();
+    success ? toast.success() : toast.error();
   }
 
   @override
@@ -102,7 +108,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         child: processing ? const LoadingIndicator() :
         DragDropContainer(
-            onDrag: (files) => processFiles(files)
+          onDrag: (files) => processFiles(files),
+          encrypting: encrypting,
+          onToggle: (encrypting) => setState(() => this.encrypting = encrypting)
         ),
       ),
     );
