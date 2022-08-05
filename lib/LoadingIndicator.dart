@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LoadingIndicator extends StatelessWidget {
-  const LoadingIndicator({Key? key}) : super(key: key);
+  const LoadingIndicator({Key? key, required this.current, required this.total}) : super(key: key);
+  final int current, total;
 
   @override
   Widget build(BuildContext context) {
@@ -9,10 +10,10 @@ class LoadingIndicator extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-                'Processing File(s)',
+            Text(
+                'Processing File(s)  $current / $total',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 20)
+                style: const TextStyle(color: Colors.white, fontSize: 20)
             ),
             const SizedBox(height: 20),
             SizedBox(

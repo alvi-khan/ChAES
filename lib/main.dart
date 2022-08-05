@@ -45,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool processing = false;
   bool encrypting = false;
   int currentFile = 1;
+  int totalFiles = 0;
   late ToastHandler toast;
   var crypt = AesCrypt();
 
@@ -82,9 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void processFiles(List<File> files) async {
+    setState(() => totalFiles = files.length);
     setState(() => processing = true);
     // allows time for UI to update
     await Future.delayed(const Duration(seconds: 1));
+
+    bool success = false;
+    currentFile = 0;
 
     String password = await getPassword();
     if (password.isNotEmpty)  crypt.setPassword(password);
@@ -94,9 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
       return;
     }
 
-    bool success = false;
-    currentFile = 0;
-
     for (File file in files) {
       setState(() => currentFile = currentFile + 1);
       success = encrypting ? await encrypt(file) : await decrypt(file);
@@ -104,6 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() => processing = false);
     success ? toast.success() : toast.error();
+    setState(() => currentFile = 1);
   }
 
   @override
@@ -111,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade900,
       body: Container(
-        child: processing ? const LoadingIndicator() :
+        child: processing ? LoadingIndicator(current: currentFile, total: totalFiles) :
         DragDropContainer(
           onDrag: (files) => processFiles(files),
           encrypting: encrypting,
