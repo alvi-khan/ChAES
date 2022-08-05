@@ -88,6 +88,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     String password = await getPassword();
     if (password.isNotEmpty)  crypt.setPassword(password);
+    else {
+      setState(() => processing = false);
+      toast.error();
+      return;
+    }
 
     bool success = false;
     currentFile = 0;
