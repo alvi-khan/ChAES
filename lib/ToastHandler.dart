@@ -6,7 +6,7 @@ class ToastHandler {
 
   void error() {
     Color color = Colors.redAccent.shade400;
-    String text = 'Operating failed for some files.';
+    String text = 'Operation failed for some files.';
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: SnackBarContent(color: color, text: text),
