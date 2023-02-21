@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "aes_decrypt" "\0"
+            VALUE "FileDescription", "chaes" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "aes_decrypt" "\0"
+            VALUE "InternalName", "chaes" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "aes_decrypt.exe" "\0"
-            VALUE "ProductName", "aes_decrypt" "\0"
+            VALUE "OriginalFilename", "chaes.exe" "\0"
+            VALUE "ProductName", "chaes" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

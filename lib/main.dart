@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aes_decrypt/DragDropContainer.dart';
-import 'package:aes_decrypt/LoadingIndicator.dart';
-import 'package:aes_decrypt/PasswordDialog.dart';
-import 'package:aes_decrypt/ToastHandler.dart';
+import 'package:chaes/DragDropContainer.dart';
+import 'package:chaes/LoadingIndicator.dart';
+import 'package:chaes/PasswordDialog.dart';
+import 'package:chaes/ToastHandler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_window/desktop_window.dart';
